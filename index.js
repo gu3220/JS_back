@@ -3,7 +3,6 @@ const http = require("http");
 const cors = require("cors");
 const { notFound, errorHandler } = require("./middlewares/middlewares");
 const { initDB } = require("./dataBase");
-
 const apiTodosRouter = require("./controllers/api-todos.controller");
 const apiUsersRouter = require("./controllers/api-users.controller");
 const apiAuthRouter = require("./controllers/api-auth.controller");

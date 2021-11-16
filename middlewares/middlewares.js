@@ -30,7 +30,7 @@ const errorHandler = (err, _req, res, _next) => {
 const requireToken = async (req, res, next) => {
   const token = req.headers["x-access-token"];
   if (!token) {
-    throw new ErrorResponse("No token sent", 401);
+    throw new ErrorResponse("No token sent", 400);
   }
   const check = await Token.findOne({
     where: {
@@ -38,7 +38,7 @@ const requireToken = async (req, res, next) => {
     },
   });
   if (!check) {
-    throw new ErrorResponse("Wrong token", 400);
+    throw new ErrorResponse("Wrong token", 403);
   }
   req.userId = check.userId;
 

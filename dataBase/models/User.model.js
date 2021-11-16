@@ -27,6 +27,7 @@ User.init(
     },
     name: {
       type: Sequelize.STRING,
+      allowNull: true,
     },
   },
   {

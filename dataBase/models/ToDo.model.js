@@ -18,6 +18,7 @@ ToDo.init(
     },
     description: {
       type: Sequelize.DataTypes.STRING,
+      allowNull: true,
     },
     isDone: {
       type: Sequelize.DataTypes.BOOLEAN,
@@ -37,5 +38,6 @@ ToDo.init(
     underscored: true,
     modelName: "todo",
   }
-),
-  (module.exports = ToDo);
+);
+
+module.exports = ToDo;

@@ -3,7 +3,7 @@ const ErrorResponse = require("../classes/error-response");
 const User = require("../dataBase/models/User.model");
 const Token = require("../dataBase/models/Token.model");
 const { asyncHandler } = require("../middlewares/middlewares");
-var { nanoid } = require("nanoid");
+const { nanoid } = require("nanoid");
 
 const router = Router();
 
@@ -12,27 +12,25 @@ function initRoutes() {
   router.post("/login", asyncHandler(login));
 }
 
-async function registration(req, res, next) {
-  const login = await User.findOne({
+async function registration(req, res) {
+  const userByLogin = await User.findOne({
     where: {
       login: req.body.login,
     },
   });
-  if (login) {
+  if (userByLogin) {
     throw new ErrorResponse("Login is already in use", 400);
   }
-  const email = await User.findOne({
+  const userByEmail = await User.findOne({
     where: {
       email: req.body.email,
     },
   });
-  if (email) {
+  if (userByEmail) {
     throw new ErrorResponse("Email is already in use", 400);
   }
   const user = await User.create(req.body);
-  return res.status(201).json({
-    user,
-  });
+  res.status(201).json(user);
 }
 
 async function login(req, res) {
@@ -49,9 +47,8 @@ async function login(req, res) {
     userId: user.id,
     value: nanoid(),
   });
-  return res.status(201).json({
+  res.status(201).json({
     accessToken: token.value,
-    user,
   });
 }
 

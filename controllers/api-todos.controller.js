@@ -29,7 +29,7 @@ async function deleteToDoById(req, res) {
     throw new ErrorResponse("todo not found", 404);
   }
   await todo.destroy();
-  res.status(204).send("ok");
+  res.status(204).json({ message: "ok" });
 }
 
 async function deleteToDos(req, res) {
@@ -38,7 +38,7 @@ async function deleteToDos(req, res) {
       userId: req.userId,
     },
   });
-  res.status(204).json("ok");
+  res.status(204).json({ message: "ok" });
 }
 
 async function patchToDo(req, res) {
@@ -52,30 +52,27 @@ async function patchToDo(req, res) {
     throw new ErrorResponse("todo not found", 404);
   }
   const updated = await todo.update(req.body);
-  return res.status(200).json(updated);
+  res.status(200).json(updated);
 }
 
-async function createToDo(req, res, next) {
+async function createToDo(req, res) {
   const todo = await ToDo.create({
-    ...req.body,
+    ...req.body, 
     userId: req.userId,
   });
-  return res.status(201).json({ todo });
+  res.status(201).json(todo);
 }
 
-async function getToDos(req, res, next) {
+async function getToDos(req, res) {
   const todos = await ToDo.findAll({
     where: {
       userId: req.userId,
     },
   });
-  if (!todos) {
-    throw new ErrorResponse("No todos found", 404);
-  }
   res.status(200).json({ todos });
 }
 
-async function getToDoById(req, res, next) {
+async function getToDoById(req, res) {
   const todo = await ToDo.findOne({
     where: {
       id: req.params.id,
